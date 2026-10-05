@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Ticket Booking – Sample</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0b1a2e 0%, #1a2f3f 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .booking-container {
+      max-width: 1000px;
+      width: 100%;
+      background: #f8fafc;
+      border-radius: 2rem;
+      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .header {
+      background: #0f172a;
+      color: white;
+      padding: 1.75rem 2rem;
+      text-align: center;
+      border-bottom: 4px solid #facc15;
+    }
+
+    .header h1 {
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .header h1 span {
+      background: #facc15;
+      color: #0f172a;
+      font-size: 1.2rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-weight: 700;
+    }
+
+    .header p {
+      margin-top: 0.4rem;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .booking-panel {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .movie-info {
+      flex: 1.2;
+      min-width: 280px;
+      background: #ffffff;
+      padding: 2rem 1.8rem;
+      border-right: 1px dashed #cbd5e1;
+    }
+
+    .movie-poster {
+      background: #1e293b;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      margin-bottom: 1.6rem;
+    }
+
+    .movie-poster .emoji-reel {
+      font-size: 4.5rem;
+      line-height: 1;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+    }
+
+    .movie-poster h2 {
+      color: #f8fafc;
+      font-size: 1.6rem;
+      margin-top: 0.5rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .movie-poster .meta {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.6rem;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .details {
+      margin-bottom: 2rem;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.98rem;
+    }
+
+    .detail-item .label {
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .detail-item .value {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .price-tag {
+      background: #f1f5f9;
+      padding: 1rem 1.2rem;
+      border-radius: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .price-tag span:first-child {
+      color: #334155;
+    }
+
+    .price-tag .amount {
+      font-size: 1.6rem;
+      color: #0f172a;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .booking-form {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem 1.8rem;
+      background: #ffffff;
+    }
+
+    .booking-form h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-left: 6px solid #facc15;
+      padding-left: 0.9rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #475569;
+      margin-bottom: 0.4rem;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 0.9rem;
+      font-size: 1rem;
+      background: #f8fafc;
+      transition: 0.2s;
+      outline: none;
+      color: #0f172a;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: #facc15;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.2);
+    }
+
+    .input-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    .row-2col {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .row-2col .input-group {
+      flex: 1;
+    }
+
+    .seat-hint {
+      background: #f1f5f9;
+      border-radius: 0.8rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0.5rem 0 1.5rem;
+      color: #1e293b;
+    }
+
+    .seat-hint .price-per-seat {
+      font-weight: 700;
+      color: #b45309;
+    }
+
+    .book-btn {
+      width: 100%;
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 1.1rem;
+      border-radius: 1.2rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 10px 20px -8px rgba(15, 23, 42, 0.4);
+      border: 1px solid #1e293b;
+    }
+
+    .book-btn:hover {
+      background: #1e293b;
+      transform: scale(1.01);
+      box-shadow: 0 15px 25px -8px #0f172a;
+    }
+
+    .book-btn:active {
+      transform: scale(0.98);
+    }
+
+    .message-box {
+      margin-top: 1.2rem;
+      padding: 1rem;
+      border-radius: 1rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: none;
+    }
+
+    .message-box.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .message-box.show {
+      display: block;
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-align: center;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1.2rem;
+    }
+
+    @media (max-width: 720px) {
+      .booking-panel {
+        flex-direction: column;
+      }
+      .movie-info {
+        border-right: none;
+        border-bottom: 1px dashed #cbd5e1;
+      }
+      .header h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="booking-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      🎬 CineBook
+      <span>sample</span>
+    </h1>
+    <p>book your movie tickets in seconds</p>
+  </div>
+
+  <!-- Main panel -->
+  <div class="booking-panel">
+    <!-- Left: Movie info -->
+    <div class="movie-info">
+      <div class="movie-poster">
+        <div class="emoji-reel">🎥🍿</div>
+        <h2>Dune: Part Two</h2>
+        <div class="meta">
+          <span>⭐ 8.8</span>
+          <span>•</span>
+          <span>Sci-Fi / Adventure</span>
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="detail-item">
+          <span class="label">📅 Date</span>
+          <span class="value" id="displayDate">Today, 15 Apr</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">⏰ Showtime</span>
+          <span class="value" id="displayTime">7:30 PM</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">🎭 Screen</span>
+          <span class="value">IMAX · Screen 4</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">🪑 Seat class</span>
+          <span class="value" id="displaySeatType">Premium</span>
+        </div>
+      </div>
+
+      <div class="price-tag">
+        <span>💰 Price per ticket</span>
+        <span class="amount" id="displayPrice">$14.50</span>
+      </div>
+    </div>
+
+    <!-- Right: Booking form -->
+    <div class="booking-form">
+      <h3>🎟️ Book tickets</h3>
+
+      <form id="bookingForm" onsubmit="return false;">
+        <!-- Full name -->
+        <div class="input-group">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" placeholder="e.g. Alex Johnson" value="Alex Johnson" autocomplete="off">
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="alex@example.com" value="alex@example.com" autocomplete="off">
+        </div>
+
+        <!-- Date & time row -->
+        <div class="row-2col">
+          <div class="input-group">
+            <label for="dateSelect">Date</label>
+            <select id="dateSelect">
+              <option value="Today, 15 Apr" selected>Today, 15 Apr</option>
+              <option value="Tomorrow, 16 Apr">Tomorrow, 16 Apr</option>
+              <option value="Fri, 17 Apr">Fri, 17 Apr</option>
+              <option value="Sat, 18 Apr">Sat, 18 Apr</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="timeSelect">Showtime</label>
+            <select id="timeSelect">
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="3:15 PM">3:15 PM</option>
+              <option value="7:30 PM" selected>7:30 PM</option>
+              <option value="10:45 PM">10:45 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Seat type & number of tickets -->
+        <div class="row-2col">
+          <div class="input-group">
+            <label for="seatType">Seat type</label>
+            <select id="seatType">
+              <option value="Standard" data-price="10.00">Standard – $10.00</option>
+              <option value="Premium" data-price="14.50" selected>Premium – $14.50</option>
+              <option value="VIP" data-price="21.00">VIP – $21.00</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="ticketCount">Tickets</label>
+            <select id="ticketCount">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Seat hint and live price -->
+        <div class="seat-hint">
+          <span>🎫 <span id="seatTypeLabel">Premium</span> × <span id="countLabel">1</span></span>
+          <span class="price-per-seat" id="totalPriceHint">$14.50</span>
+        </div>
+
+        <!-- Book button -->
+        <button type="submit" class="book-btn" id="bookBtn">
+          <span>🎟️</span> Confirm booking
+        </button>
+
+        <!-- Success / error message -->
+        <div id="messageBox" class="message-box"></div>
+      </form>
+
+      <div class="footer-note">
+        ⚡ This is a sample booking flow — no real payment.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ----- DOM elements -----
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const dateSelect = document.getElementById('dateSelect');
+    const timeSelect = document.getElementById('timeSelect');
+    const seatTypeSelect = document.getElementById('seatType');
+    const ticketCountSelect = document.getElementById('ticketCount');
+
+    const displayDate = document.getElementById('displayDate');
+    const displayTime = document.getElementById('displayTime');
+    const displaySeatType = document.getElementById('displaySeatType');
+    const displayPrice = document.getElementById('displayPrice');
+
+    const seatTypeLabel = document.getElementById('seatTypeLabel');
+    const countLabel = document.getElementById('countLabel');
+    const totalPriceHint = document.getElementById('totalPriceHint');
+    const messageBox = document.getElementById('messageBox');
+    const bookBtn = document.getElementById('bookBtn');
+
+    // ----- Helper: get numeric price from seat type -----
+    function getSeatPrice(seatType) {
+      const selectedOption = seatTypeSelect.querySelector(`option[value="${seatType}"]`);
+      return selectedOption ? parseFloat(selectedOption.dataset.price) : 14.50;
+    }
+
+    // ----- Update all dynamic displays -----
+    function updateUI() {
+      // 1. Update left panel (movie info)
+      displayDate.textContent = dateSelect.value;
+      displayTime.textContent = timeSelect.value;
+
+      const seatType = seatTypeSelect.value;
+      displaySeatType.textContent = seatType;
+
+      const pricePerTicket = getSeatPrice(seatType);
+      displayPrice.textContent = `$${pricePerTicket.toFixed(2)}`;
+
+      // 2. Update seat hint area
+      seatTypeLabel.textContent = seatType;
+      const ticketCount = parseInt(ticketCountSelect.value, 10);
+      countLabel.textContent = ticketCount;
+
+      const total = pricePerTicket * ticketCount;
+      totalPriceHint.textContent = `$${total.toFixed(2)}`;
+
+      // 3. Auto-update email & name placeholders if empty (just for nicety)
+      if (!fullNameInput.value.trim()) {
+        fullNameInput.placeholder = 'Enter your full name';
+      }
+      if (!emailInput.value.trim()) {
+        emailInput.placeholder = 'your@email.com';
+      }
+    }
+
+    // ----- Show message (success/error) -----
+    function showMessage(text, isError = false) {
+      messageBox.textContent = text;
+      messageBox.classList.add('show');
+      if (isError) {
+        messageBox.classList.add('error');
+      } else {
+        messageBox.classList.remove('error');
+      }
+
+      // Auto-hide after 6 seconds
+      clearTimeout(window.messageTimeout);
+      window.messageTimeout = setTimeout(() => {
+        messageBox.classList.remove('show', 'error');
+      }, 6000);
+    }
+
+    // ----- Handle booking submission -----
+    function handleBooking(e) {
+      e.preventDefault();
+
+      // Grab values
+      const name = fullNameInput.value.trim();
+      const email = emailInput.value.trim();
+      const date = dateSelect.value;
+      const time = timeSelect.value;
+      const seatType = seatTypeSelect.value;
+      const ticketCount = parseInt(ticketCountSelect.value, 10);
+
+      // Simple validation
+      if (!name) {
+        showMessage('❌ Please enter your full name.', true);
+        fullNameInput.focus();
+        return;
+      }
+
+      if (!email) {
+        showMessage('❌ Please enter your email address.', true);
+        emailInput.focus();
+        return;
+      }
+
+      // Very basic email check (contains @ and .)
+      if (!email.includes('@') || !email.includes('.')) {
+        showMessage('❌ Please enter a valid email address.', true);
+        emailInput.focus();
+        return;
+      }
+
+      // Calculate total
+      const pricePerTicket = getSeatPrice(seatType);
+      const totalAmount = pricePerTicket * ticketCount;
+
+      // Build success message (sample, no real backend)
+      const successMsg = `✅ BOOKED! ${ticketCount} × ${seatType} ticket(s) for "${name}" (${email}) on ${date} at ${time}. Total: $${totalAmount.toFixed(2)}. 🎬`;
+
+      showMessage(successMsg, false);
+
+      // (Optional: reset form fields? But we keep for convenience — not resetting to make it easy to book again)
+      // We'll just keep values as they are. If you want to reset name/email, uncomment:
+      // fullNameInput.value = 'Alex Johnson';
+      // emailInput.value = 'alex@example.com';
+      // But we keep the current values to avoid annoyance.
+    }
+
+    // ----- Attach event listeners -----
+    // Update UI on any change
+    dateSelect.addEventListener('change', updateUI);
+    timeSelect.addEventListener('change', updateUI);
+    seatTypeSelect.addEventListener('change', updateUI);
+    ticketCountSelect.addEventListener('change', updateUI);
+
+    // Also listen to input on name/email (not needed for UI but can be used)
+    // No extra UI update needed for name/email.
+
+    // Form submission
+    const form = document.getElementById('bookingForm');
+    form.addEventListener('submit', handleBooking);
+
+    // Initialize UI with default values
+    updateUI();
+
+    // Prefill name/email values (already set in HTML, but we ensure they're not empty)
+    if (!fullNameInput.value) fullNameInput.value = 'Alex Johnson';
+    if (!emailInput.value) emailInput.value = 'alex@example.com';
+
+    // Also trigger a little update for the hint (total)
+    updateUI();
+
+    // Extra: when seat type changes, we update the displayed price.
+    // We also want to update the seat type label in the hint.
+    // All covered by updateUI.
+
+    // Additional small polish: Show a welcome message? No, not needed.
+  })();
+</script>
+
+</body>
+</html>
